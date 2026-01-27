@@ -14,7 +14,7 @@ WIFI_SSID = "CP"
 WIFI_PASSWORD = "12345678"
 
 #API_URL = "http://192.168.137.1/presensi_api/api.php"
-API_URL = "http://albinosatyr-project.my.id/api/api.php"
+API_URL = "http://ur-domain.com/api/api.php"
 
 DEVICE_ID = "CP_PA"
 
@@ -769,5 +769,6 @@ except Exception as e:
     lcd.putstr("Error!")
     lcd.move_to(0, 1)
     lcd.putstr(str(e)[:16])
+
 
 
