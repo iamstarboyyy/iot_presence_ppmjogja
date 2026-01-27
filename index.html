@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Presensi PPM Jogja</title>
+    
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==================== ROOT VARIABLES - DARK THEME ==================== */
+        :root[data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --bg-soft: #0f172a;
+            --bg-input: #1e293b;
+            --border-subtle: rgba(148, 163, 184, 0.2);
+            --border-strong: rgba(148, 163, 184, 0.4);
+            --accent: #22c55e;
+            --accent-hover: #16a34a;
+            --accent-soft: rgba(34, 197, 94, 0.1);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --danger: #ef4444;
+            --danger-soft: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-soft: rgba(245, 158, 11, 0.1);
+            --info: #3b82f6;
+            --info-soft: rgba(59, 130, 246, 0.1);
+        }
+
+        /* ==================== ROOT VARIABLES - LIGHT THEME ==================== */
+        :root[data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --bg-soft: #f8fafc;
+            --bg-input: #ffffff;
+            --border-subtle: rgba(148, 163, 184, 0.3);
+            --border-strong: rgba(148, 163, 184, 0.5);
+            --accent: #22c55e;
+            --accent-hover: #16a34a;
+            --accent-soft: rgba(34, 197, 94, 0.1);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-dim: #94a3b8;
+            --danger: #ef4444;
+            --danger-soft: rgba(239, 68, 68, 0.1);
+            --warning: #f59e0b;
+            --warning-soft: rgba(245, 158, 11, 0.1);
+            --info: #3b82f6;
+            --info-soft: rgba(59, 130, 246, 0.1);
+        }
+
+        /* ==================== COMMON VARIABLES ==================== */
+        :root {
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --radius-pill: 999px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* ==================== RESET & BASE ==================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark theme gradient background */
+        :root[data-theme="dark"] body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            background-attachment: fixed;
+        }
+
+        /* Light theme gradient background */
+        :root[data-theme="light"] body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
+            background-attachment: fixed;
+        }
+
+        /* ==================== CONTAINER ==================== */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Logo Image - Ganti Card IoT */
+        .logo-container {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-image {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            transition: transform 0.2s ease;
+        }
+
+        .logo-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Fallback jika gambar tidak ada */
+        .logo-pill {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 8px 16px rgba(34, 197, 94, 0.3);
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+
+        .header-title .datetime {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .user-info .level {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Theme Toggle Button */
+        .btn-theme-toggle {
+            background: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--border-strong);
+            padding: 10px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-theme-toggle:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-logout {
+            background: var(--bg-input);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-logout:hover {
+            background: var(--danger-soft);
+            border-color: var(--danger);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-logout svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ==================== TABS ==================== */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-strong);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        /* ==================== CONTENT ==================== */
+        .content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-xl);
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .content h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        /* ==================== FILTERS ==================== */
+        .filter-card {
+            background: var(--bg-soft);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-strong);
+            background: var(--bg-input);
+            color: var(--text-main);
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        select:hover {
+            border-color: var(--accent);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ==================== BUTTONS ==================== */
+        .btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--border-strong);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn.secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-edit {
+            background: var(--warning-soft);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit:hover {
+            background: var(--warning);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-update {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-close {
+            background: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--border-strong);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .btn-close:hover {
+            background: var(--bg-card-hover);
+        }
+
+        /* ==================== STATS GRID ==================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-soft);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        /* ==================== CHARTS ==================== */
+        .chart-container {
+            background: var(--bg-soft);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        /* ==================== TABLES ==================== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-soft);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background: var(--bg-input);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            font-size: 0.875rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* ==================== STATUS BADGES ==================== */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-H {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .status-T1 {
+            background: rgba(250, 204, 21, 0.15);
+            color: #facc15;
+        }
+
+        .status-T2 {
+            background: rgba(249, 115, 22, 0.15);
+            color: #fb923c;
+        }
+
+        .status-T3 {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .status-A {
+            background: rgba(148, 163, 184, 0.15);
+            color: #94a3b8;
+        }
+
+        .status-I {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        /* ==================== SESSION CARDS ==================== */
+        .session-card {
+            background: var(--bg-soft);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--accent);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .session-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .session-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .session-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .session-info strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* ==================== MODAL ==================== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 32px;
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .modal-header .close {
+            font-size: 2rem;
+            line-height: 1;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-header .close:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            margin-bottom: 24px;
+        }
+
+        .form-group-modal {
+            margin-bottom: 20px;
+        }
+
+        .form-group-modal label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group-modal input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-strong);
+            background: var(--bg-input);
+            color: var(--text-main);
+            font-size: 0.875rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .form-group-modal input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .form-group-modal input:read-only {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* ==================== SESI ITEMS ==================== */
+        .sesi-item {
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--accent);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .sesi-item:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+        }
+
+        .sesi-item.alpha {
+            border-left-color: var(--text-muted);
+        }
+
+        .sesi-item.izin {
+            border-left-color: var(--info);
+        }
+
+        .sesi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sesi-title {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.875rem;
+        }
+
+        .sesi-info {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .sesi-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sesi-controls select {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* ==================== SORTABLE ==================== */
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        .sortable::after {
+            content: ' ⇅';
+            opacity: 0.4;
+            font-size: 0.75rem;
+        }
+
+        .sortable:hover::after {
+            opacity: 1;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px 12px 32px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-left {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-right {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .user-info {
+                text-align: left;
+            }
+
+            .header-title h1 {
+                font-size: 1.25rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .session-info {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 20px auto;
+            }
+
+            .sesi-controls {
+                flex-direction: column;
+            }
+
+            .sesi-controls select {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.75rem;
+            }
+
+            th, td {
+                padding: 10px 12px;
+            }
+        }
+
+        /* ==================== SCROLLBAR ==================== */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-soft);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-strong);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo-container">
+                    <!-- GANTI DENGAN PATH LOGO KAMU -->
+                    <img src="logo.png" alt="Logo PPM Jogja" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+                    <!-- Fallback jika gambar tidak ada -->
+                    <div class="logo-pill" style="display: none;">IoT</div>
+                </div>
+                <div class="header-title">
+                    <h1>Dashboard Presensi PPM Jogja</h1>
+                    <div class="datetime" id="datetime"></div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="name" id="adminName">Loading...</div>
+                    <div class="level" id="adminLevel"></div>
+                </div>
+                <button class="btn-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <svg id="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                        <circle cx="12" cy="12" r="5" stroke-width="2"/>
+                        <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg id="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="btn-logout" onclick="logout()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="16 17 21 12 16 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="21" y1="12" x2="9" y2="12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="today">📋 Presensi Hari Ini</div>
+            <div class="tab" data-tab="sessions">🕌 Sesi Hari Ini</div>
+            <div class="tab" data-tab="rekap">📊 Rekap Kehadiran</div>
+        </div>
+
+        <!-- Tab: Presensi Hari Ini -->
+        <div class="content active" id="today">
+            <h2><span>📋</span> Presensi Hari Ini</h2>
+            
+            <div class="filter-card">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Kelas</label>
+                        <select id="filterKelasToday">
+                            <option value="">Semua Kelas</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sesi</label>
+                        <select id="filterSesiToday">
+                            <option value="">Semua Sesi</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" style="align-self: flex-end;">
+                        <button class="btn" onclick="loadAttendanceToday()">🔍 Tampilkan</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Hadir</h3>
+                    <div class="number" id="stat-total">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Hadir (H)</h3>
+                    <div class="number" id="stat-h">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Terlambat (T1)</h3>
+                    <div class="number" id="stat-t1">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Terlambat (T2)</h3>
+                    <div class="number" id="stat-t2">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Terlambat (T3)</h3>
+                    <div class="number" id="stat-t3">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Alpha (A)</h3>
+                    <div class="number" id="stat-a">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Izin (I)</h3>
+                    <div class="number" id="stat-i">0</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title"><span>📊</span> Grafik Distribusi Kehadiran</div>
+                <div class="chart-wrapper">
+                    <canvas id="chartPresensiToday"></canvas>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th class="sortable" onclick="sortTable(0, 'today')">Nama Santri</th>
+                            <th>Kelas</th>
+                            <th>Sesi</th>
+                            <th>Waktu Scan</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-today">
+                        <tr><td colspan="6" class="loading">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Sesi Hari Ini -->
+        <div class="content" id="sessions">
+            <h2><span>🕌</span> Sesi Pengajian Hari Ini</h2>
+            
+            <div style="margin-bottom:20px;">
+                <button class="btn secondary" onclick="loadSessionsToday()">🔄 Refresh Data</button>
+            </div>
+            
+            <div id="sessions-list">
+                <div class="loading">Memuat data...</div>
+            </div>
+        </div>
+
+        <!-- Tab: Rekap Kehadiran -->
+        <div class="content" id="rekap">
+            <h2><span>📊</span> Rekap Kehadiran Santri</h2>
+            
+            <div class="filter-card">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label>Periode</label>
+                        <select id="filterPeriode">
+                            <option value="minggu">Minggu Ini</option>
+                            <option value="bulan">Bulan Ini</option>
+                            <option value="semua">Semua Data</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Kelas</label>
+                        <select id="filterKelas">
+                            <option value="">Semua Kelas</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" style="align-self: flex-end;">
+                        <div style="display:flex; gap:12px;">
+                            <button class="btn" style="flex:1;" onclick="loadRekapKehadiran()">🔍 Tampilkan</button>
+                            <button class="btn secondary" style="flex:1;" onclick="exportToExcel()">📥 Export</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title"><span>📊</span> Grafik Total Rekap Kehadiran</div>
+                <div class="chart-wrapper">
+                    <canvas id="chartRekapKehadiran"></canvas>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th class="sortable" onclick="sortTable(1, 'rekap')">Nama Santri</th>
+                            <th>Kelas</th>
+                            <th>Total</th>
+                            <th>H</th>
+                            <th>T1</th>
+                            <th>T2</th>
+                            <th>T3</th>
+                            <th>A</th>
+                            <th>I</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-rekap">
+                        <tr><td colspan="11" class="loading">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal Edit -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>✏️ Edit Kehadiran Santri</h2>
+                    <span class="close" onclick="closeModal()">×</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group-modal">
+                        <label>Nama Santri</label>
+                        <input type="text" id="editNama" readonly>
+                    </div>
+                    <div class="form-group-modal">
+                        <label>Kelas</label>
+                        <input type="text" id="editKelas" readonly>
+                    </div>
+                    <div style="margin: 20px 0;">
+                        <label style="font-size: 0.875rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; display: block;">📖 Daftar Sesi & Status Kehadiran</label>
+                        <div id="editSesiList">
+                            <div class="loading">Memuat data sesi...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-close" onclick="closeModal()">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const API_URL = 'https://albinosatyr-project.my.id/api.php';
+
+        // ==================== GLOBAL VARIABLES ====================
+        let currentAdmin = null;
+        let authToken = null;
+        let currentEditSantriId = null;
+        let currentEditSantriData = null;
+        let tableData = {
+            today: [],
+            rekap: []
+        };
+        let chartPresensiToday = null;
+        let chartRekapKehadiran = null;
+
+        // ==================== THEME MANAGEMENT ====================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+            
+            // Update charts dengan warna tema baru
+            if (chartPresensiToday) {
+                const stats = {
+                    H: parseInt(document.getElementById('stat-h').textContent),
+                    T1: parseInt(document.getElementById('stat-t1').textContent),
+                    T2: parseInt(document.getElementById('stat-t2').textContent),
+                    T3: parseInt(document.getElementById('stat-t3').textContent),
+                    A: parseInt(document.getElementById('stat-a').textContent),
+                    I: parseInt(document.getElementById('stat-i').textContent)
+                };
+                updateChartPresensiToday(stats);
+            }
+            
+            if (chartRekapKehadiran) {
+                updateChartRekapKehadiran(tableData.rekap);
+            }
+        }
+
+        function updateThemeIcon(theme) {
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            
+            if (theme === 'dark') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+
+        // ==================== INITIALIZATION ====================
+        window.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            checkAuthentication();
+        });
+
+        // ==================== AUTHENTICATION FUNCTIONS ====================
+        async function checkAuthentication() {
+            authToken = localStorage.getItem('token');
+            const adminData = localStorage.getItem('admin');
+            
+            if (!authToken || !adminData) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}?action=checksession`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: authToken
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentAdmin = JSON.parse(adminData);
+                    displayUserInfo();
+                    initializeDashboard();
+                } else {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('admin');
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                window.location.href = 'login.html';
+            }
+        }
+
+        function displayUserInfo() {
+            if (currentAdmin) {
+                document.getElementById('adminName').textContent = currentAdmin.nama_lengkap;
+                
+                const levelMap = {
+                    'superadmin': 'SUPER ADMIN',
+                    'operator': 'OPERATOR',
+                    'santri': 'SANTRI'
+                };
+                
+                const levelText = levelMap[currentAdmin.level] || currentAdmin.level.toUpperCase();
+                document.getElementById('adminLevel').textContent = levelText;
+            }
+        }
+
+        function initializeDashboard() {
+            const tabs = document.querySelectorAll('.tab');
+            const level = currentAdmin.level;
+            
+            if (level === 'santri') {
+                tabs.forEach(tab => {
+                    if (tab.dataset.tab !== 'rekap') {
+                        tab.style.display = 'none';
+                    } else {
+                        tab.textContent = '📊 Kehadiran Saya';
+                    }
+                });
+                
+                const rekapTab = document.querySelector('.tab[data-tab="rekap"]');
+                if (rekapTab) {
+                    rekapTab.click();
+                }
+            } else {
+                loadKelasOptionsToday();
+                loadSesiOptions();
+                loadAttendanceToday();
+            }
+        }
+
+        async function logout() {
+            if (!confirm('Yakin ingin logout?')) {
+                return;
+            }
+            
+            try {
+                await fetch(`${API_URL}?action=logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: authToken
+                    })
+                });
+            } catch (error) {
+                console.error('Error during logout:', error);
+            }
+            
+            localStorage.removeItem('token');
+            localStorage.removeItem('admin');
+            window.location.href = 'login.html';
+        }
+
+        // ==================== UI UPDATE FUNCTIONS ====================
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            const dateTimeString = now.toLocaleDateString('id-ID', options);
+            document.getElementById('datetime').textContent = dateTimeString;
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // ==================== TAB MANAGEMENT ====================
+        document.querySelectorAll('.tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(function(t) {
+                    t.classList.remove('active');
+                });
+                document.querySelectorAll('.content').forEach(function(c) {
+                    c.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                const contentId = this.dataset.tab;
+                document.getElementById(contentId).classList.add('active');
+                
+                if (contentId === 'today') {
+                    loadKelasOptionsToday();
+                    loadSesiOptions();
+                    loadAttendanceToday();
+                } else if (contentId === 'sessions') {
+                    loadSessionsToday();
+                } else if (contentId === 'rekap') {
+                    loadKelasOptions();
+                    loadRekapKehadiran();
+                }
+            });
+        });
+
+        // ==================== PRESENSI HARI INI FUNCTIONS ====================
+        async function loadAttendanceToday() {
+            try {
+                const kelas = document.getElementById('filterKelasToday').value;
+                const sesi = document.getElementById('filterSesiToday').value;
+                
+                const response = await fetch(`${API_URL}?action=getattendancetoday&kelas=${kelas}&sesi=${sesi}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    tableData.today = data;
+                    
+                    const stats = {
+                        total: data.length,
+                        H: data.filter(function(d) { return d.status_kehadiran === 'H'; }).length,
+                        T1: data.filter(function(d) { return d.status_kehadiran === 'T1'; }).length,
+                        T2: data.filter(function(d) { return d.status_kehadiran === 'T2'; }).length,
+                        T3: data.filter(function(d) { return d.status_kehadiran === 'T3'; }).length,
+                        A: data.filter(function(d) { return d.status_kehadiran === 'A'; }).length,
+                        I: data.filter(function(d) { return d.status_kehadiran === 'I'; }).length
+                    };
+                    
+                    document.getElementById('stat-total').textContent = stats.total;
+                    document.getElementById('stat-h').textContent = stats.H;
+                    document.getElementById('stat-t1').textContent = stats.T1;
+                    document.getElementById('stat-t2').textContent = stats.T2;
+                    document.getElementById('stat-t3').textContent = stats.T3;
+                    document.getElementById('stat-a').textContent = stats.A;
+                    document.getElementById('stat-i').textContent = stats.I;
+                    
+                    renderTableToday();
+                    updateChartPresensiToday(stats);
+                }
+            } catch (error) {
+                console.error('Error loading attendance today:', error);
+                document.getElementById('table-today').innerHTML = '<tr><td colspan="6" class="loading" style="color: var(--danger);">Gagal memuat data</td></tr>';
+            }
+        }
+
+        function renderTableToday() {
+            const tbody = document.getElementById('table-today');
+            const data = tableData.today;
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="loading">Belum ada data presensi hari ini</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            data.forEach(function(item, index) {
+                const statusClass = 'status-' + item.status_kehadiran;
+                html += '<tr>';
+                html += '<td>' + (index + 1) + '</td>';
+                html += '<td>' + item.nama_lengkap + '</td>';
+                html += '<td>' + item.nama_kelas + '</td>';
+                html += '<td>' + item.nama_sesi + '</td>';
+                html += '<td>' + formatDateTime(item.waktu_scan) + '</td>';
+                html += '<td><span class="status-badge ' + statusClass + '">' + item.nama_status + '</span></td>';
+                html += '</tr>';
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        // ==================== SESI HARI INI FUNCTIONS ====================
+        async function loadSessionsToday() {
+            try {
+                const response = await fetch(`${API_URL}?action=getsessionstoday`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    const container = document.getElementById('sessions-list');
+                    
+                    if (data.length === 0) {
+                        container.innerHTML = '<div class="loading">Belum ada sesi hari ini</div>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    data.forEach(function(item) {
+                        const statusColor = item.status_sesi === 'berlangsung' ? 'var(--accent)' : 'var(--text-muted)';
+                        
+                        html += '<div class="session-card">';
+                        html += '<h3>📚 Sesi ' + item.nama_sesi + ' - ' + item.nama_kelas + '</h3>';
+                        html += '<div class="session-info">';
+                        html += '<div><strong>Device:</strong> ' + item.kode_device + '</div>';
+                        html += '<div><strong>Mulai:</strong> ' + formatDateTime(item.waktu_mulai_aktual) + '</div>';
+                        html += '<div><strong>Salam:</strong> ' + (item.waktu_salam ? formatDateTime(item.waktu_salam) : '-') + '</div>';
+                        html += '<div><strong>Selesai:</strong> ' + (item.waktu_selesai ? formatDateTime(item.waktu_selesai) : '-') + '</div>';
+                        html += '<div><strong>Status:</strong> <span style="color: ' + statusColor + '; font-weight: 600;">' + item.status_sesi.toUpperCase() + '</span></div>';
+                        html += '<div><strong>Jumlah Hadir:</strong> ' + item.jumlah_hadir + ' santri</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+                    
+                    container.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading sessions today:', error);
+                document.getElementById('sessions-list').innerHTML = '<div class="loading" style="color: var(--danger);">Gagal memuat data</div>';
+            }
+        }
+
+        // ==================== REKAP KEHADIRAN FUNCTIONS ====================
+        async function loadRekapKehadiran() {
+            try {
+                const periode = document.getElementById('filterPeriode').value;
+                const kelas = document.getElementById('filterKelas').value;
+                const level = currentAdmin.level;
+                const id_santri = currentAdmin.id_santri || '';
+                
+                const response = await fetch(`${API_URL}?action=getrekapkehadiran&periode=${periode}&kelas=${kelas}&level=${level}&id_santri=${id_santri}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    tableData.rekap = result.data;
+                    renderTableRekap();
+                    updateChartRekapKehadiran(tableData.rekap);
+                }
+            } catch (error) {
+                console.error('Error loading rekap kehadiran:', error);
+                document.getElementById('table-rekap').innerHTML = '<tr><td colspan="11" class="loading" style="color: var(--danger);">Gagal memuat data</td></tr>';
+            }
+        }
+
+        function renderTableRekap() {
+            const tbody = document.getElementById('table-rekap');
+            const data = tableData.rekap;
+            const level = currentAdmin.level;
+            const canEdit = (level === 'superadmin');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" class="loading">Belum ada data</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            data.forEach(function(item, index) {
+                html += '<tr>';
+                html += '<td>' + (index + 1) + '</td>';
+                html += '<td>' + item.nama_lengkap + '</td>';
+                html += '<td>' + item.nama_kelas + '</td>';
+                html += '<td>' + (item.total_kehadiran || 0) + '</td>';
+                html += '<td>' + (item.hadir_tepat || 0) + '</td>';
+                html += '<td>' + (item.terlambat_t1 || 0) + '</td>';
+                html += '<td>' + (item.terlambat_t2 || 0) + '</td>';
+                html += '<td>' + (item.terlambat_t3 || 0) + '</td>';
+                html += '<td>' + (item.alpha || 0) + '</td>';
+                html += '<td>' + (item.izin || 0) + '</td>';
+                html += '<td>';
+                if (canEdit) {
+                    html += '<button class="btn-edit" onclick="editKehadiran(' + item.id_santri + ', \'' + item.nama_lengkap.replace(/'/g, '') + '\')">✏️ Edit</button>';
+                } else {
+                    html += '-';
+                }
+                html += '</td>';
+                html += '</tr>';
+            });
+            
+            tbody.innerHTML = html;
+        }
+
+        // ==================== EDIT KEHADIRAN FUNCTIONS ====================
+        async function editKehadiran(id_santri, nama) {
+            if (currentAdmin.level !== 'superadmin') {
+                alert('Anda tidak memiliki hak akses untuk mengedit kehadiran');
+                return;
+            }
+            
+            currentEditSantriId = id_santri;
+            
+            const santriData = tableData.rekap.find(function(s) {
+                return s.id_santri == id_santri;
+            });
+            
+            currentEditSantriData = santriData;
+            
+            document.getElementById('editNama').value = nama;
+            document.getElementById('editKelas').value = santriData ? santriData.nama_kelas : '-';
+            document.getElementById('editModal').style.display = 'block';
+            
+            await loadSantriSesiDetail(id_santri);
+        }
+
+        async function loadSantriSesiDetail(id_santri) {
+            try {
+                const periode = document.getElementById('filterPeriode').value;
+                
+                const response = await fetch(`${API_URL}?action=getsantripresensidetail&id_santri=${id_santri}&periode=${periode}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    renderSesiList(result.data);
+                } else {
+                    document.getElementById('editSesiList').innerHTML = '<div class="loading">Tidak ada data sesi</div>';
+                }
+            } catch (error) {
+                console.error('Error loading santri sesi detail:', error);
+                document.getElementById('editSesiList').innerHTML = '<div class="loading" style="color: var(--danger);">Gagal memuat data</div>';
+            }
+        }
+
+        function renderSesiList(sesiData) {
+            const container = document.getElementById('editSesiList');
+            
+            if (sesiData.length === 0) {
+                container.innerHTML = '<div class="loading">Belum ada sesi dalam periode ini</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            sesiData.forEach(function(sesi) {
+                const hasPresensi = sesi.id_presensi != null;
+                const status = sesi.status_kehadiran;
+                const itemClass = status === 'A' ? 'alpha' : (status === 'I' ? 'izin' : '');
+                
+                html += '<div class="sesi-item ' + itemClass + '">';
+                html += '<div class="sesi-header">';
+                html += '<div class="sesi-title">📖 ' + sesi.nama_sesi + ' - ' + sesi.tanggal_format;
+                
+                if (sesi.status_sesi === 'selesai') {
+                    html += '<span style="color: var(--accent); margin-left: 8px;">✓ Selesai</span>';
+                } else {
+                    html += '<span style="color: var(--warning); margin-left: 8px;">⏳ Berlangsung</span>';
+                }
+                
+                html += '</div>';
+                
+                if (hasPresensi) {
+                    html += '<span class="status-badge status-' + status + '">' + sesi.nama_status + '</span>';
+                } else {
+                    html += '<span class="status-badge" style="background: rgba(148, 163, 184, 0.15); color: var(--text-muted);">Belum Presensi</span>';
+                }
+                
+                html += '</div>';
+                
+                html += '<div class="sesi-info">🏫 ' + sesi.nama_kelas + ' • 📍 ' + sesi.kode_device + ' • ⏰ Mulai: ' + formatTime(sesi.waktu_mulai_aktual);
+                
+                if (sesi.waktu_salam) {
+                    html += ' • 🤲 Salam: ' + formatTime(sesi.waktu_salam);
+                }
+                
+                if (sesi.waktu_scan) {
+                    html += ' • 👆 Scan: ' + formatTime(sesi.waktu_scan);
+                }
+                
+                html += '</div>';
+                
+                html += '<div class="sesi-controls">';
+                html += '<select id="status_' + sesi.id_jadwal + '">';
+                html += '<option value="">-- Pilih Status --</option>';
+                html += '<option value="H"' + (status === 'H' ? ' selected' : '') + '>H - Hadir</option>';
+                html += '<option value="T1"' + (status === 'T1' ? ' selected' : '') + '>T1 - Terlambat 0-5 menit</option>';
+                html += '<option value="T2"' + (status === 'T2' ? ' selected' : '') + '>T2 - Terlambat 5-15 menit</option>';
+                html += '<option value="T3"' + (status === 'T3' ? ' selected' : '') + '>T3 - Terlambat >15 menit</option>';
+                html += '<option value="A"' + (status === 'A' ? ' selected' : '') + '>A - Alpha</option>';
+                html += '<option value="I"' + (status === 'I' ? ' selected' : '') + '>I - Izin</option>';
+                html += '</select>';
+                
+                const buttonText = hasPresensi ? '✏️ Update' : '➕ Tambah';
+                html += '<button class="btn-update" onclick="updateSesiStatus(' + sesi.id_jadwal + ', ' + sesi.id_presensi + ', ' + hasPresensi + ')">' + buttonText + '</button>';
+                
+                html += '</div>';
+                html += '</div>';
+            });
+            
+            container.innerHTML = html;
+        }
+
+        async function updateSesiStatus(id_jadwal, id_presensi, hasPresensi) {
+            const selectElement = document.getElementById('status_' + id_jadwal);
+            const status = selectElement.value;
+            
+            if (!status) {
+                alert('Pilih status terlebih dahulu!');
+                return;
+            }
+            
+            const confirmMessage = 'Yakin ingin ' + (hasPresensi ? 'mengubah' : 'menambahkan') + ' status menjadi "' + status + '"?';
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            try {
+                let url, data;
+                
+                if (hasPresensi) {
+                    url = API_URL + '?action=updatestatuspresensi';
+                    data = {
+                        id_presensi: id_presensi,
+                        status: status,
+                        id_admin: currentAdmin.id_admin,
+                        level: currentAdmin.level
+                    };
+                } else {
+                    url = API_URL + '?action=addmanualpresensi';
+                    data = {
+                        id_jadwal: id_jadwal,
+                        id_santri: currentEditSantriId,
+                        status: status,
+                        id_admin: currentAdmin.id_admin,
+                        level: currentAdmin.level
+                    };
+                }
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert(result.message);
+                    await loadSantriSesiDetail(currentEditSantriId);
+                    await loadRekapKehadiran();
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                console.error('Error updating sesi status:', error);
+                alert('Gagal menyimpan perubahan');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentEditSantriId = null;
+            currentEditSantriData = null;
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // ==================== EXPORT EXCEL FUNCTION ====================
+        async function exportToExcel() {
+            if (currentAdmin.level === 'santri') {
+                alert('Anda tidak memiliki hak akses untuk export data');
+                return;
+            }
+            
+            try {
+                const periode = document.getElementById('filterPeriode').value;
+                const kelas = document.getElementById('filterKelas').value;
+                const level = currentAdmin.level;
+                const id_santri = currentAdmin.id_santri || '';
+                
+                const response = await fetch(`${API_URL}?action=getexportdata&periode=${periode}&kelas=${kelas}&level=${level}&id_santri=${id_santri}`);
+                const result = await response.json();
+                
+                if (!result.success) {
+                    alert('Gagal mengambil data export');
+                    return;
+                }
+                
+                const exportData = result.data;
+                
+                let html = '<table border="1">';
+                html += '<thead>';
+                html += '<tr style="background-color: #1e293b; color: white; font-weight: bold;">';
+                html += '<th>No</th>';
+                html += '<th>Nama</th>';
+                html += '<th>Kelas</th>';
+                html += '<th>Total Kehadiran</th>';
+                
+                exportData.sesi_tanggal.forEach(function(st) {
+                    html += '<th>' + st + '</th>';
+                });
+                
+                html += '<th>A</th>';
+                html += '<th>I</th>';
+                html += '<th>T1</th>';
+                html += '<th>T2</th>';
+                html += '<th>T3</th>';
+                html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                
+                exportData.santri.forEach(function(santri, index) {
+                    html += '<tr>';
+                    html += '<td>' + (index + 1) + '</td>';
+                    html += '<td>' + santri.nama_lengkap + '</td>';
+                    html += '<td>' + santri.nama_kelas + '</td>';
+                    html += '<td>' + (santri.total_kehadiran || 0) + '</td>';
+                    
+                    exportData.sesi_tanggal.forEach(function(st) {
+                        const detail = exportData.detail.find(function(d) {
+                            return d.id_santri == santri.id_santri && d.sesi_tanggal === st;
+                        });
+                        html += '<td>' + (detail ? detail.status_kehadiran : '-') + '</td>';
+                    });
+                    
+                    html += '<td>' + (santri.total_alpha || 0) + '</td>';
+                    html += '<td>' + (santri.total_izin || 0) + '</td>';
+                    html += '<td>' + (santri.total_t1 || 0) + '</td>';
+                    html += '<td>' + (santri.total_t2 || 0) + '</td>';
+                    html += '<td>' + (santri.total_t3 || 0) + '</td>';
+                    html += '</tr>';
+                });
+                
+                html += '</tbody>';
+                html += '</table>';
+                
+                const kelasSelect = document.getElementById('filterKelas');
+                const kelasText = kelasSelect.selectedOptions[0] ? kelasSelect.selectedOptions[0].text : 'Semua';
+                const today = new Date();
+                const dateString = today.toISOString().split('T')[0];
+                const filename = 'RekapKehadiran_' + periode + '_' + kelasText + '_' + dateString + '.xls';
+                
+                const blob = new Blob([html], {
+                    type: 'application/vnd.ms-excel'
+                });
+                
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+            } catch (error) {
+                console.error('Error exporting to Excel:', error);
+                alert('Gagal export data');
+            }
+        }
+
+        // ==================== HELPER FUNCTIONS ====================
+        async function loadKelasOptions() {
+            try {
+                const response = await fetch(`${API_URL}?action=getkelas`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const select = document.getElementById('filterKelas');
+                    let html = '<option value="">Semua Kelas</option>';
+                    
+                    result.data.forEach(function(kelas) {
+                        html += '<option value="' + kelas.id_kelas + '">' + kelas.nama_kelas + '</option>';
+                    });
+                    
+                    select.innerHTML = html;
+                    
+                    if (currentAdmin.level === 'santri') {
+                        select.disabled = true;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading kelas options:', error);
+            }
+        }
+
+        async function loadKelasOptionsToday() {
+            try {
+                const response = await fetch(`${API_URL}?action=getkelas`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const select = document.getElementById('filterKelasToday');
+                    let html = '<option value="">Semua Kelas</option>';
+                    
+                    result.data.forEach(function(kelas) {
+                        html += '<option value="' + kelas.id_kelas + '">' + kelas.nama_kelas + '</option>';
+                    });
+                    
+                    select.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading kelas options today:', error);
+            }
+        }
+
+        async function loadSesiOptions() {
+            try {
+                const response = await fetch(`${API_URL}?action=getsesi`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const select = document.getElementById('filterSesiToday');
+                    let html = '<option value="">Semua Sesi</option>';
+                    
+                    result.data.forEach(function(sesi) {
+                        html += '<option value="' + sesi.id_sesi + '">' + sesi.nama_sesi + '</option>';
+                    });
+                    
+                    select.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading sesi options:', error);
+            }
+        }
+
+        function formatDateTime(datetime) {
+            if (!datetime) {
+                return '-';
+            }
+            
+            const date = new Date(datetime);
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            
+            return date.toLocaleString('id-ID', options);
+        }
+
+        function formatTime(datetime) {
+            if (!datetime) {
+                return '-';
+            }
+            
+            const date = new Date(datetime);
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            
+            return date.toLocaleTimeString('id-ID', options);
+        }
+
+        function sortTable(columnIndex, tableType) {
+            const data = tableData[tableType];
+            const isAscending = !data.sortAsc;
+            data.sortAsc = isAscending;
+            
+            data.sort(function(a, b) {
+                const aVal = a.nama_lengkap;
+                const bVal = b.nama_lengkap;
+                
+                if (isAscending) {
+                    return aVal > bVal ? 1 : -1;
+                } else {
+                    return aVal < bVal ? 1 : -1;
+                }
+            });
+            
+            if (tableType === 'today') {
+                renderTableToday();
+            } else if (tableType === 'rekap') {
+                renderTableRekap();
+            }
+        }
+
+        // ==================== CHART FUNCTIONS ====================
+        function getChartTextColor() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            return theme === 'dark' ? '#f1f5f9' : '#0f172a';
+        }
+
+        function updateChartPresensiToday(stats) {
+            const ctx = document.getElementById('chartPresensiToday');
+            if (!ctx) {
+                return;
+            }
+            
+            const textColor = getChartTextColor();
+            
+            const config = {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hadir (H)', 'Terlambat (T1)', 'Terlambat (T2)', 'Terlambat (T3)', 'Alpha (A)', 'Izin (I)'],
+                    datasets: [{
+                        data: [stats.H, stats.T1, stats.T2, stats.T3, stats.A, stats.I],
+                        backgroundColor: [
+                            'rgba(34,197,94,0.8)',
+                            'rgba(250,204,21,0.8)',
+                            'rgba(249,115,22,0.8)',
+                            'rgba(239,68,68,0.8)',
+                            'rgba(148,163,184,0.8)',
+                            'rgba(59,130,246,0.8)'
+                        ],
+                        borderColor: [
+                            '#22c55e',
+                            '#facc15',
+                            '#fb923c',
+                            '#ef4444',
+                            '#94a3b8',
+                            '#3b82f6'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: textColor,
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    family: 'Inter',
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#f1f5f9',
+                            borderColor: 'rgba(148, 163, 184, 0.2)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label;
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce(function(a, b) { return a + b; }, 0);
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+                                    return label + ': ' + value + ' santri (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            
+            if (chartPresensiToday) {
+                chartPresensiToday.destroy();
+            }
+            
+            chartPresensiToday = new Chart(ctx, config);
+        }
+
+        function updateChartRekapKehadiran(data) {
+            const ctx = document.getElementById('chartRekapKehadiran');
+            if (!ctx) {
+                return;
+            }
+            
+            if (!data || data.length === 0) {
+                if (chartRekapKehadiran) {
+                    chartRekapKehadiran.destroy();
+                    chartRekapKehadiran = null;
+                }
+                return;
+            }
+            
+            const textColor = getChartTextColor();
+            
+            const totals = {
+                H: 0,
+                T1: 0,
+                T2: 0,
+                T3: 0,
+                A: 0,
+                I: 0
+            };
+            
+            data.forEach(function(item) {
+                totals.H += Number(item.hadir_tepat || 0);
+                totals.T1 += Number(item.terlambat_t1 || 0);
+                totals.T2 += Number(item.terlambat_t2 || 0);
+                totals.T3 += Number(item.terlambat_t3 || 0);
+                totals.A += Number(item.alpha || 0);
+                totals.I += Number(item.izin || 0);
+            });
+            
+            const maxValue = Math.max.apply(null, Object.values(totals));
+            const suggestedMax = maxValue > 0 ? Math.ceil(maxValue * 1.2) : 10;
+            
+            const config = {
+                type: 'bar',
+                data: {
+                    labels: ['Hadir (H)', 'Terlambat (T1)', 'Terlambat (T2)', 'Terlambat (T3)', 'Alpha (A)', 'Izin (I)'],
+                    datasets: [{
+                        data: [totals.H, totals.T1, totals.T2, totals.T3, totals.A, totals.I],
+                        backgroundColor: [
+                            'rgba(34,197,94,0.8)',
+                            'rgba(250,204,21,0.8)',
+                            'rgba(249,115,22,0.8)',
+                            'rgba(239,68,68,0.8)',
+                            'rgba(148,163,184,0.8)',
+                            'rgba(59,130,246,0.8)'
+                        ],
+                        borderColor: [
+                            '#22c55e',
+                            '#facc15',
+                            '#fb923c',
+                            '#ef4444',
+                            '#94a3b8',
+                            '#3b82f6'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: textColor,
+                                font: {
+                                    size: 11,
+                                    family: 'Inter',
+                                    weight: '500'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)',
+                                drawBorder: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            suggestedMax: suggestedMax,
+                            ticks: {
+                                color: textColor,
+                                font: {
+                                    size: 11,
+                                    family: 'Inter',
+                                    weight: '500'
+                                },
+                                stepSize: Math.max(1, Math.ceil(suggestedMax / 10)),
+                                callback: function(value) {
+                                    return Number.isInteger(value) ? value : null;
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)',
+                                drawBorder: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#f1f5f9',
+                            borderColor: 'rgba(148, 163, 184, 0.2)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const total = Object.values(totals).reduce(function(a, b) { return a + b; }, 0);
+                                    const percentage = total > 0 ? ((context.parsed.y / total) * 100).toFixed(1) : '0';
+                                    return context.label + ': ' + context.parsed.y + ' kehadiran (' + percentage + '%)';
+                                },
+                                footer: function() {
+                                    const total = Object.values(totals).reduce(function(a, b) { return a + b; }, 0);
+                                    return 'Total: ' + total + ' kehadiran';
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            
+            if (chartRekapKehadiran) {
+                chartRekapKehadiran.destroy();
+            }
+            
+            chartRekapKehadiran = new Chart(ctx, config);
+        }
+
+        // ==================== AUTO REFRESH ====================
+        setInterval(function() {
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab) {
+                const tabName = activeTab.dataset.tab;
+                if (tabName === 'today') {
+                    loadAttendanceToday();
+                } else if (tabName === 'sessions') {
+                    loadSessionsToday();
+                }
+            }
+        }, 30000);
+
+    </script>
+</body>
+</html>
+
