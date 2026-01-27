@@ -1,6 +1,4 @@
 <?php
-// File: api.php
-// Letakkan di: C:/api.php
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -9,9 +7,9 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 // Konfigurasi Database
 $host = 'localhost';
-$dbname = 'albf9957_ujicoba';
-$username = 'albf9957_albinosatyr';
-$password = 'strfrds24-db';
+$dbname = 'ur_db_name';
+$username = 'ur_db_uname';
+$password = 'ur_db_pass';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -956,3 +954,4 @@ function getSessionsToday($pdo) {
 }
 
 ?>
+
